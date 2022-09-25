@@ -1,6 +1,7 @@
 package com.example.sampleapp.feature_game.presentation.game
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import com.example.sampleapp.feature_game.domain.model.Food
 import com.example.sampleapp.feature_game.domain.util.Orientation
@@ -22,9 +23,9 @@ class GameViewModel @Inject constructor() : ViewModel() {
     var snake by mutableStateOf(
         Snake(
             listOf(
-                Point(SIZE_SNAKE * 3, 0f),
-                Point(SIZE_SNAKE * 2, 0f),
-                Point(SIZE_SNAKE, 0f),
+                Point(Snake.SIZE_SNAKE * 3, 0f),
+                Point(Snake.SIZE_SNAKE * 2, 0f),
+                Point(Snake.SIZE_SNAKE, 0f),
                 Point(0f, 0f)
             )
         )
@@ -37,10 +38,16 @@ class GameViewModel @Inject constructor() : ViewModel() {
     private var snakeOrientation = Orientation.RIGHT
     private var lastSnakeOrientation = snakeOrientation
 
-    fun launchGame() {
+    private var screenSize: IntSize? = null
+    var gameIsLaunched = false
+    fun launchGame(screenSize: IntSize) {
+        if(gameIsLaunched) return
+        gameIsLaunched = true
+        this.screenSize = screenSize
         CoroutineScope(Dispatchers.IO).launch {
             updateFoodPosition()
-            while (true) {
+            var loose = false
+            while (!loose) {
                 CoroutineScope(Dispatchers.Main).launch {
                     lastSnakeOrientation = snakeOrientation
                     val snakePositions = snake.positionsList
@@ -49,14 +56,19 @@ class GameViewModel @Inject constructor() : ViewModel() {
                     // Calculate next position of first point
                     snakePositions.first().let { point ->
                         val firstPoint = when (snakeOrientation) {
-                            Orientation.UP -> point.copy(y = point.y - SIZE_SNAKE)
-                            Orientation.DOWN -> point.copy(y = point.y + SIZE_SNAKE)
-                            Orientation.LEFT -> point.copy(x = point.x - SIZE_SNAKE)
-                            Orientation.RIGHT -> point.copy(x = point.x + SIZE_SNAKE)
+                            Orientation.UP -> point.copy(y = point.y - Snake.SIZE_SNAKE)
+                            Orientation.DOWN -> point.copy(y = point.y + Snake.SIZE_SNAKE)
+                            Orientation.LEFT -> point.copy(x = point.x - Snake.SIZE_SNAKE)
+                            Orientation.RIGHT -> point.copy(x = point.x + Snake.SIZE_SNAKE)
                         }
+
+                        // Check if snake eat itself or wall
+                        loose =
+                            snakePositions.contains(firstPoint) || firstPoint.x < 0 || firstPoint.y < 0 || firstPoint.y >= screenSize.height || firstPoint.x >= screenSize.width
                         snakeHasEat = point == food?.position
                         newSnakePositions.add(firstPoint)
                     }
+
                     snakePositions.forEachIndexed { index, _ ->
                         if (snakeHasEat) {
                             newSnakePositions.add(snakePositions[index].copy())
@@ -72,7 +84,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
                     snake = snake.copy(positionsList = newSnakePositions)
                 }
                 withContext(Dispatchers.IO) {
-                    Thread.sleep(100)
+                    Thread.sleep(150)
                 }
             }
         }
@@ -96,13 +108,8 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun updateFoodPosition() {
-        val x = SIZE_SNAKE * (1..20).random()
-        val y = SIZE_SNAKE * (1..20).random()
+        val x = Snake.SIZE_SNAKE * (1..20).random()
+        val y = Snake.SIZE_SNAKE * (1..20).random()
         food = Food(Point(x, y))
-    }
-
-    companion object {
-        const val SIZE_SNAKE = 35f // TODO estimate this ?
-        const val HALF_SIZE_SNAKE = SIZE_SNAKE / 2
     }
 }

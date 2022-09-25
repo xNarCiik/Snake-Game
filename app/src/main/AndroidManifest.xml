@@ -16,6 +16,7 @@
         <activity
             android:name=".feature_game.presentation.MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.SampleApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

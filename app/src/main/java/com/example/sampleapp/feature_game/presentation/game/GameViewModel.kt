@@ -39,9 +39,10 @@ class GameViewModel @Inject constructor() : ViewModel() {
     private var lastSnakeOrientation = snakeOrientation
 
     private var screenSize: IntSize? = null
-    var gameIsLaunched = false
+    var gameIsLaunched = false // TODO remove this check ?
+
     fun launchGame(screenSize: IntSize) {
-        if(gameIsLaunched) return
+        if (gameIsLaunched) return
         gameIsLaunched = true
         this.screenSize = screenSize
         CoroutineScope(Dispatchers.IO).launch {
@@ -84,7 +85,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
                     snake = snake.copy(positionsList = newSnakePositions)
                 }
                 withContext(Dispatchers.IO) {
-                    Thread.sleep(150)
+                    Thread.sleep(100)
                 }
             }
         }
@@ -108,8 +109,10 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun updateFoodPosition() {
-        val x = Snake.SIZE_SNAKE * (1..20).random()
-        val y = Snake.SIZE_SNAKE * (1..20).random()
-        food = Food(Point(x, y))
+        screenSize?.let {
+            val x = Snake.SIZE_SNAKE * (1 until (it.width/Snake.SIZE_SNAKE).toInt()).random()
+            val y = Snake.SIZE_SNAKE * (1 until (it.height/Snake.SIZE_SNAKE).toInt()).random()
+            food = Food(Point(x, y))
+        }
     }
 }

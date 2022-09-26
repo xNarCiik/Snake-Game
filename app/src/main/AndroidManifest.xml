@@ -11,13 +11,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SampleApp"
+        android:theme="@style/Theme.SnakeApp"
         tools:targetApi="31">
         <activity
             android:name=".feature_game.presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.SampleApp">
+            android:theme="@style/Theme.SnakeApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

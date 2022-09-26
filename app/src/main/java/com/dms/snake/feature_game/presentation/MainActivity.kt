@@ -48,6 +48,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        startService(Intent(this, BackgroundMusicService::class.java))
+        startService(Intent(this, BackgroundMusicService::class.java).apply {
+            action = BackgroundMusicService.PLAY_MUSIC_ACTION
+        })
     }
 }

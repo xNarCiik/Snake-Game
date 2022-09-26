@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -11,8 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.dms.snake.BackgroundMusicService
 import com.dms.snake.R
 import com.dms.snake.feature_game.domain.util.Difficulty
+import com.dms.snake.feature_game.presentation.common.components.MusicButtonIcon
 import com.dms.snake.feature_game.presentation.common.components.SnakeButton
 import com.dms.snake.feature_game.presentation.util.Screen
 import com.dms.snake.ui.theme.GreenSnake
@@ -21,6 +25,8 @@ import com.dms.snake.ui.theme.GreenSnake
 fun MenuScreen(
     navController: NavController
 ) {
+    val musicIsMuted = remember { mutableStateOf(BackgroundMusicService.muted) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,12 +98,14 @@ fun MenuScreen(
             }
         }
 
+        Row(horizontalArrangement = Arrangement.End) {
+            MusicButtonIcon(musicIsMuted)
+        }
     }
 }
 
 @Preview
 @Composable
 fun MenuScreenPreview() {
-    val navController = rememberNavController()
-    MenuScreen(navController)
+    MenuScreen(rememberNavController())
 }

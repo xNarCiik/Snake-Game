@@ -35,7 +35,22 @@ class BackgroundMusicService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        musicPlayer.play()
+        intent?.action?.let {
+            when (it) {
+                UNMUTE_MUSIC_ACTION -> {
+                    musicPlayer.volume = 1.0f
+                    muted = false
+                }
+                MUTE_MUSIC_ACTION -> {
+                    musicPlayer.volume = 0.0f
+                    muted = true
+                }
+                PLAY_MUSIC_ACTION -> musicPlayer.play()
+                PAUSE_MUSIC_ACTION -> musicPlayer.pause()
+                STOP_MUSIC_ACTION -> musicPlayer.stop()
+            }
+        }
+
         return START_STICKY
     }
 
@@ -44,4 +59,13 @@ class BackgroundMusicService : Service() {
         musicPlayer.stop()
     }
 
+    companion object {
+        const val UNMUTE_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.UNMUTE_MUSIC_ACTION"
+        const val MUTE_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.MUTE_MUSIC_ACTION"
+        const val PLAY_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.PLAY_MUSIC_ACTION"
+        const val PAUSE_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.PAUSE_MUSIC_ACTION"
+        const val STOP_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.STOP_MUSIC_ACTION"
+
+        var muted = false
+    }
 }

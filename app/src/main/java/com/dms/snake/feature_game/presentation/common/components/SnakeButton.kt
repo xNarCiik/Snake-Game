@@ -1,4 +1,4 @@
-package com.dms.snake.feature_game.presentation.menu.components
+package com.dms.snake.feature_game.presentation.common.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.RowScope
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.dms.snake.ui.theme.GreenSnake
 
 @Composable
-fun SnakeButton(modifier: Modifier, onClick: () -> Unit, content: @Composable RowScope.() -> Unit) {
+fun SnakeButton(modifier: Modifier = Modifier, onClick: () -> Unit, content: @Composable RowScope.() -> Unit) {
     OutlinedButton(
         modifier = modifier,
         onClick = onClick,

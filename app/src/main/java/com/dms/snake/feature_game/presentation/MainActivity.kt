@@ -1,5 +1,6 @@
 package com.dms.snake.feature_game.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,12 +9,14 @@ import androidx.compose.material.Surface
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dms.snake.BackgroundMusicService
 import com.dms.snake.feature_game.presentation.game.GameScreen
 import com.dms.snake.feature_game.presentation.highscores.HighscoresScreen
 import com.dms.snake.feature_game.presentation.menu.MenuScreen
 import com.dms.snake.feature_game.presentation.util.Screen
 import com.dms.snake.ui.theme.SnakeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -44,5 +47,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        startService(Intent(this, BackgroundMusicService::class.java))
     }
 }

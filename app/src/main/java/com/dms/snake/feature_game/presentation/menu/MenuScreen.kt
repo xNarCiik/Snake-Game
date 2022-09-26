@@ -6,12 +6,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.dms.snake.R
 import com.dms.snake.feature_game.domain.util.Difficulty
-import com.dms.snake.feature_game.presentation.menu.components.SnakeButton
+import com.dms.snake.feature_game.presentation.common.components.SnakeButton
 import com.dms.snake.feature_game.presentation.util.Screen
 import com.dms.snake.ui.theme.GreenSnake
 
@@ -26,7 +28,7 @@ fun MenuScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Snake",
+            text = stringResource(id = R.string.app_name),
             style = MaterialTheme.typography.h1,
             color = GreenSnake
         )
@@ -51,7 +53,7 @@ fun MenuScreen(
                     }
                 ) {
                     Text(
-                        text = "Start",
+                        text = stringResource(R.string.start),
                         style = MaterialTheme.typography.h3
                     )
                 }
@@ -63,7 +65,7 @@ fun MenuScreen(
                     }
                 ) {
                     Text(
-                        text = "Highscores",
+                        text = stringResource(R.string.highscores),
                         style = MaterialTheme.typography.h3
                     )
                 }
@@ -78,7 +80,7 @@ fun MenuScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Difficulty",
+                            text = stringResource(R.string.difficulty),
                             style = MaterialTheme.typography.h3
                         )
                         Text(

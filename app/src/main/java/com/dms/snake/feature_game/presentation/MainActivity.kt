@@ -1,15 +1,15 @@
 package com.dms.snake.feature_game.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.dms.snake.BackgroundMusicService
+import com.dms.snake.feature_game.presentation.common.MusicViewModel
 import com.dms.snake.feature_game.presentation.game.GameScreen
 import com.dms.snake.feature_game.presentation.highscores.HighscoresScreen
 import com.dms.snake.feature_game.presentation.menu.MenuScreen
@@ -17,9 +17,10 @@ import com.dms.snake.feature_game.presentation.util.Screen
 import com.dms.snake.ui.theme.SnakeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val musicViewModel: MusicViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +36,19 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.MenuScreen.route
                     ) {
                         composable(route = Screen.MenuScreen.route) {
-                            MenuScreen(navController)
+                            MenuScreen(navController, musicViewModel)
                         }
                         composable(route = Screen.HighscoresScreen.route) {
                             HighscoresScreen(navController)
                         }
                         composable(route = Screen.GameScreen.route) {
-                            GameScreen(navController)
+                            GameScreen(navController, musicViewModel)
                         }
                     }
                 }
             }
         }
 
-        startService(Intent(this, BackgroundMusicService::class.java).apply {
-            action = BackgroundMusicService.PLAY_MUSIC_ACTION
-        })
+        musicViewModel.init()
     }
 }

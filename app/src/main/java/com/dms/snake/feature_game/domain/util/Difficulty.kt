@@ -1,7 +1,8 @@
 package com.dms.snake.feature_game.domain.util
 
-enum class Difficulty(val stringValue: String) {
-    NORMAL("normal"),
-    HARD("hard"),
-    HARDCORE("hardcore")
+import com.dms.snake.R
+
+enum class Difficulty(val stringRes: Int) {
+    NORMAL(R.string.difficulty_normal),
+    HARD(R.string.difficulty_hard)
 }

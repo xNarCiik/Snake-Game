@@ -12,12 +12,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.dms.snake.feature_game.presentation.common.MusicViewModel
+import com.dms.snake.feature_game.presentation.game.components.BottomGame
 import com.dms.snake.feature_game.presentation.game.components.GameInterface
 import com.dms.snake.feature_game.presentation.game.components.HeaderGame
 
 @Composable
 fun GameScreen(
     navController: NavController,
+    musicViewModel: MusicViewModel,
     gameViewModel: GameViewModel = hiltViewModel()
 ) {
     Surface(
@@ -29,9 +32,11 @@ fun GameScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            HeaderGame(navController, gameViewModel)
+            HeaderGame(navController, musicViewModel, gameViewModel)
 
-            GameInterface(gameViewModel)
+            GameInterface(gameViewModel, Modifier.weight(1f))
+
+            BottomGame(gameViewModel)
         }
     }
 }
@@ -40,5 +45,5 @@ fun GameScreen(
 @Composable
 fun GameScreenPreview() {
     val navController = rememberNavController()
-    GameScreen(navController = navController)
+    GameScreen(navController = navController, musicViewModel = hiltViewModel())
 }

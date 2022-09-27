@@ -8,8 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.dms.snake.BackgroundMusicService
 import com.dms.snake.R
+import com.dms.snake.feature_game.presentation.common.MusicViewModel
 import com.dms.snake.feature_game.presentation.common.components.MusicButtonIcon
 import com.dms.snake.feature_game.presentation.common.components.SnakeButtonIcon
 import com.dms.snake.feature_game.presentation.game.GameEvent
@@ -29,10 +27,9 @@ import com.dms.snake.ui.theme.GreenSnake
 @Composable
 fun HeaderGame(
     navController: NavController,
+    musicViewModel: MusicViewModel,
     gameViewModel: GameViewModel
 ) {
-    val musicIsMuted = remember { mutableStateOf(BackgroundMusicService.muted) }
-
     Row(
         modifier = Modifier.padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -58,7 +55,7 @@ fun HeaderGame(
             )
         }
 
-        MusicButtonIcon(musicIsMuted = musicIsMuted)
+        MusicButtonIcon(musicViewModel = musicViewModel)
 
         PauseButton(gameViewModel.paused, onPauseClick = {
             gameViewModel.onEvent(GameEvent.Pause(true))
@@ -71,5 +68,5 @@ fun HeaderGame(
 @Composable
 @Preview
 fun HeaderGamePreview() {
-    HeaderGame(navController = rememberNavController(), gameViewModel = hiltViewModel())
+    HeaderGame(navController = rememberNavController(), musicViewModel = hiltViewModel(), gameViewModel = hiltViewModel())
 }

@@ -11,9 +11,7 @@ import com.google.android.exoplayer2.Player.REPEAT_MODE_ALL
 // TODO where put service ?
 class BackgroundMusicService : Service() {
 
-    private val musicPlayer by lazy {
-        ExoPlayer.Builder(this).build()
-    }
+    private lateinit var musicPlayer: ExoPlayer
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -25,7 +23,7 @@ class BackgroundMusicService : Service() {
     }
 
     private fun initializeMusicPlayer() {
-        musicPlayer.apply {
+        musicPlayer = ExoPlayer.Builder(this).build().apply {
             val uri = Uri.parse("android.resource://$packageName/${R.raw.background_music}")
             val mediaItem = MediaItem.fromUri(uri)
             setMediaItem(mediaItem)
@@ -35,19 +33,19 @@ class BackgroundMusicService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        intent?.action?.let {
-            when (it) {
-                UNMUTE_MUSIC_ACTION -> {
-                    musicPlayer.volume = 1.0f
-                    muted = false
+        intent?.apply {
+            action?.let {
+                when (it) {
+                    UNMUTE_MUSIC_ACTION -> musicPlayer.volume = 1f
+                    MUTE_MUSIC_ACTION -> musicPlayer.volume = 0f
+                    PLAY_MUSIC_ACTION -> musicPlayer.play()
+                    PAUSE_MUSIC_ACTION -> musicPlayer.pause()
+                    STOP_MUSIC_ACTION -> musicPlayer.stop()
                 }
-                MUTE_MUSIC_ACTION -> {
-                    musicPlayer.volume = 0.0f
-                    muted = true
-                }
-                PLAY_MUSIC_ACTION -> musicPlayer.play()
-                PAUSE_MUSIC_ACTION -> musicPlayer.pause()
-                STOP_MUSIC_ACTION -> musicPlayer.stop()
+            }
+            // Used only at launch
+            extras?.getBoolean("is_muted")?.let {
+                if (it) musicPlayer.volume = 0f
             }
         }
 
@@ -65,7 +63,5 @@ class BackgroundMusicService : Service() {
         const val PLAY_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.PLAY_MUSIC_ACTION"
         const val PAUSE_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.PAUSE_MUSIC_ACTION"
         const val STOP_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.STOP_MUSIC_ACTION"
-
-        var muted = false
     }
 }

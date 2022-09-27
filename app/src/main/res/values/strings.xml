@@ -4,4 +4,6 @@
     <string name="start">Start</string>
     <string name="highscores">Highscores</string>
     <string name="difficulty">Difficulty</string>
+    <string name="difficulty_normal">Normal</string>
+    <string name="difficulty_hard">Hard</string>
 </resources>

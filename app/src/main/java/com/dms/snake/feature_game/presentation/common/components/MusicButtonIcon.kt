@@ -12,6 +12,6 @@ fun MusicButtonIcon(musicViewModel : MusicViewModel){
         imageVector = if (musicViewModel.isMuted) Icons.Rounded.VolumeMute else Icons.Rounded.VolumeUp,
         contentDescription = "volume"
     ) {
-        musicViewModel.muteOrUnmuteMusic()
+        musicViewModel.onMusicButtonClicked()
     }
 }

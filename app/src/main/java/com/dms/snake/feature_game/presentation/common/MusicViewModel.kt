@@ -23,11 +23,11 @@ class MusicViewModel @Inject constructor(
     fun init() {
         startServiceMusic(Intent(application, BackgroundMusicService::class.java).apply {
             action = BackgroundMusicService.PLAY_MUSIC_ACTION
-            putExtra("is_muted", isMuted)
+            putExtra(BackgroundMusicService.EXTRA_IS_MUTED, isMuted)
         })
     }
 
-    fun muteOrUnmuteMusic() {
+    fun onMusicButtonClicked() {
         startServiceMusic(Intent(application, BackgroundMusicService::class.java).apply {
             action =
                 if (isMuted) BackgroundMusicService.UNMUTE_MUSIC_ACTION else BackgroundMusicService.MUTE_MUSIC_ACTION

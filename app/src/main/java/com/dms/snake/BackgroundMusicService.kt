@@ -44,7 +44,7 @@ class BackgroundMusicService : Service() {
                 }
             }
             // Used only at launch
-            extras?.getBoolean("is_muted")?.let {
+            extras?.getBoolean(EXTRA_IS_MUTED)?.let {
                 if (it) musicPlayer.volume = 0f
             }
         }
@@ -63,5 +63,6 @@ class BackgroundMusicService : Service() {
         const val PLAY_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.PLAY_MUSIC_ACTION"
         const val PAUSE_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.PAUSE_MUSIC_ACTION"
         const val STOP_MUSIC_ACTION = "BACKGROUND_MUSIC_SERVICE.STOP_MUSIC_ACTION"
+        const val EXTRA_IS_MUTED = "is_muted"
     }
 }

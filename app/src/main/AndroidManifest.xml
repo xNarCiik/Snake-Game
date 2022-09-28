@@ -14,7 +14,7 @@
         android:theme="@style/Theme.SnakeApp"
         tools:targetApi="31">
         <activity
-            android:name=".feature_game.presentation.MainActivity"
+            android:name=".features.game.presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SnakeApp">

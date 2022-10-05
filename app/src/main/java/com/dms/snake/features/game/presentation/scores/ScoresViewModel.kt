@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,9 +26,15 @@ class ScoresViewModel @Inject constructor(
         getScores()
     }
 
+    private fun addScore(score: Score){
+        viewModelScope.launch {
+            scoresUseCases.insertScore.invoke(score)
+        }
+    }
+
     private fun getScores() {
         getScoresJob?.cancel()
-        getScoresJob = scoresUseCases.getScoresUseCase()
+        getScoresJob = scoresUseCases.getScores()
             .onEach { scores ->
                 this.scores.clear()
                 this.scores.addAll(scores)

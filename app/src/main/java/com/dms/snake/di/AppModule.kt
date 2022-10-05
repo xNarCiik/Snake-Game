@@ -10,6 +10,7 @@ import com.dms.snake.features.game.domain.use_case.game.GameUseCases
 import com.dms.snake.features.game.domain.use_case.game.GenerateFoodStateUseCase
 import com.dms.snake.features.game.domain.use_case.game.IsAllowToUpdateOrientationUseCase
 import com.dms.snake.features.game.domain.use_case.scores.GetScoresUseCase
+import com.dms.snake.features.game.domain.use_case.scores.InsertScoreUseCase
 import com.dms.snake.features.game.domain.use_case.scores.ScoresUseCases
 import dagger.Module
 import dagger.Provides
@@ -49,7 +50,8 @@ object AppModule {
     @Singleton
     fun provideScoresUseCases(snakeRepository: SnakeRepository): ScoresUseCases =
         ScoresUseCases(
-            getScoresUseCase = GetScoresUseCase(snakeRepository = snakeRepository)
+            getScores = GetScoresUseCase(snakeRepository = snakeRepository),
+            insertScore = InsertScoreUseCase(snakeRepository = snakeRepository)
         )
 
 }

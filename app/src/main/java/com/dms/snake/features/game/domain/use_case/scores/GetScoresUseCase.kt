@@ -11,7 +11,12 @@ class GetScoresUseCase(
 
     operator fun invoke(): Flow<List<Score>> {
         return snakeRepository.getScores().map { scores ->
-            scores.sortedBy { it.score }.subList(0, 10)
+            val nbScores = scores.size
+            if (nbScores >= 10) {
+                scores.sortedByDescending { it.score }.subList(0, 10)
+            } else {
+                scores.sortedByDescending { it.score }.subList(0, nbScores)
+            }
         }
     }
 }

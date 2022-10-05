@@ -6,7 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import com.dms.snake.features.game.domain.model.Point
+import com.dms.snake.features.game.domain.model.Score
 import com.dms.snake.features.game.domain.use_case.game.GameUseCases
+import com.dms.snake.features.game.domain.use_case.scores.ScoresUseCases
 import com.dms.snake.features.game.domain.util.GameState
 import com.dms.snake.features.game.domain.util.SnakeOrientation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val gameUseCases: GameUseCases
+    private val gameUseCases: GameUseCases,
+    private val scoresUseCases: ScoresUseCases
 ) : ViewModel() {
 
     var gameState by mutableStateOf(GameState.NOT_STARTED)
@@ -109,6 +112,7 @@ class GameViewModel @Inject constructor(
                         }
                     }
                 }
+                scoresUseCases.insertScore(Score("Damien", currentScore))
             }
         }
     }

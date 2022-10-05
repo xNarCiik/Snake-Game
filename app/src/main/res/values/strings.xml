@@ -6,4 +6,9 @@
     <string name="difficulty">Difficulty</string>
     <string name="difficulty_normal">Normal</string>
     <string name="difficulty_hard">Hard</string>
+    <string name="title_dialog_end_game">Game finished</string>
+    <string name="text_dialog_end_game">You have a final score of %s</string>
+    <string name="menu">Menu</string>
+    <string name="restart">Restart</string>
+    <string name="pause">Pause</string>
 </resources>

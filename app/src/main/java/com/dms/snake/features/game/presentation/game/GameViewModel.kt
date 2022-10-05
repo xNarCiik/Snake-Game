@@ -113,7 +113,7 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun restartGame(){
+    private fun restartGame() {
         // Reinit var and launch game
         gameState = GameState.NOT_STARTED
         currentScore = 0
@@ -143,7 +143,7 @@ class GameViewModel @Inject constructor(
 
     private fun updateFoodPosition() {
         screenSize?.let {
-            foodState = gameUseCases.generateFoodState(it)
+            foodState = gameUseCases.generateFoodState(it, snakeState.positionsList)
         }
     }
 }

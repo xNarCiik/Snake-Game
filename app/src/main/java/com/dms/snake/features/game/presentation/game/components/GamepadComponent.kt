@@ -18,7 +18,7 @@ import com.dms.snake.features.game.presentation.game.GameEvent
 import com.dms.snake.features.game.presentation.game.GameViewModel
 
 @Composable
-fun Gamepad(
+fun GamepadComponent(
     gameViewModel: GameViewModel
 ) {
     ConstraintLayout(
@@ -104,6 +104,6 @@ fun Gamepad(
 
 @Composable
 @Preview
-fun GamepadPreview() {
-    Gamepad(gameViewModel = hiltViewModel())
+fun GamepadComponentPreview() {
+    GamepadComponent(gameViewModel = hiltViewModel())
 }

@@ -1,9 +1,11 @@
 package com.dms.snake.features.game.presentation.game
 
 import com.dms.snake.features.game.domain.model.Point
+import com.dms.snake.features.game.domain.util.SnakeOrientation
 
 data class SnakeState(
-    val positionsList: List<Point> = initializePositionsList()
+    val positionsList: List<Point> = initializePositionsList(),
+    val orientation: SnakeOrientation = SnakeOrientation.RIGHT
 ) {
     companion object {
         const val SIZE_SNAKE = 30f // TODO estimate this ?

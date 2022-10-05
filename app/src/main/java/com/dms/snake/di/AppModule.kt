@@ -3,6 +3,7 @@ package com.dms.snake.di
 import android.app.Application
 import com.dms.snake.features.game.data.repository.GameRepositoryImpl
 import com.dms.snake.features.game.domain.repository.GameRepository
+import com.dms.snake.features.game.domain.use_case.CalculateNextFirstPointSnakeUseCase
 import com.dms.snake.features.game.domain.use_case.IsAllowToUpdateOrientationUseCase
 import com.dms.snake.features.game.domain.use_case.GameUseCases
 import com.dms.snake.features.game.domain.use_case.GenerateFoodStateUseCase
@@ -26,7 +27,8 @@ object AppModule {
     fun provideGameUseCases(): GameUseCases =
         GameUseCases(
             isAllowToUpdateOrientation = IsAllowToUpdateOrientationUseCase(),
-            generateFoodState = GenerateFoodStateUseCase()
+            generateFoodState = GenerateFoodStateUseCase(),
+            calculateNextFirstPointSnake = CalculateNextFirstPointSnakeUseCase()
         )
 
 }

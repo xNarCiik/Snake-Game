@@ -33,14 +33,16 @@ class GameViewModel @Inject constructor(
     var foodState by mutableStateOf<FoodState?>(null)
         private set
 
-    private var snakeOrientation = SnakeOrientation.RIGHT
-    private var lastSnakeOrientation = snakeOrientation
+    // Var updated only when snake move into this orientation
+    private var currentSnakeOrientation = snakeState.orientation
 
+    // Screen size where snake is allowed to move
     private var screenSize: IntSize? = null
 
     fun onEvent(event: GameEvent) {
         when (event) {
             is GameEvent.Start -> launchGame(event.screenSize)
+            is GameEvent.Restart -> restartGame()
             is GameEvent.Pause -> gameState =
                 if (event.paused) GameState.PAUSED else GameState.STARTED
             is GameEvent.ChangeSnakeOrientation -> updateOrientation(event.orientation)
@@ -49,34 +51,41 @@ class GameViewModel @Inject constructor(
 
     private fun launchGame(screenSize: IntSize) {
         this.screenSize = screenSize
-        if(this.gameState == GameState.NOT_STARTED){
+        if (this.gameState == GameState.NOT_STARTED) {
             this.gameState = GameState.STARTED
 
             CoroutineScope(Dispatchers.IO).launch {
                 updateFoodPosition()
-                var loose = false
-                while (!loose) {
+
+                while (gameState != GameState.FINISHED) {
                     if (gameState == GameState.STARTED) {
-                        lastSnakeOrientation = snakeOrientation
+                        // Update the last orientation
+                        currentSnakeOrientation = snakeState.orientation
+
                         val snakePositions = snakeState.positionsList
                         val newSnakePositions = arrayListOf<Point>()
                         var snakeHasEat: Boolean
-                        // Calculate next position of first point
-                        snakePositions.first().let { point ->
-                            val firstPoint = when (snakeOrientation) {
-                                SnakeOrientation.UP -> point.copy(y = point.y - SnakeState.SIZE_SNAKE)
-                                SnakeOrientation.DOWN -> point.copy(y = point.y + SnakeState.SIZE_SNAKE)
-                                SnakeOrientation.LEFT -> point.copy(x = point.x - SnakeState.SIZE_SNAKE)
-                                SnakeOrientation.RIGHT -> point.copy(x = point.x + SnakeState.SIZE_SNAKE)
-                            }
+
+                        snakePositions.first().let { currentFirstPoint ->
+                            // Calculate the next first point
+                            val newFirstPoint = gameUseCases.calculateNextFirstPointSnake(
+                                currentFirstPoint,
+                                currentSnakeOrientation
+                            )
+
+                            // Check if snake has eat food
+                            snakeHasEat = currentFirstPoint == foodState?.position
 
                             // Check if snake eat itself or wall
-                            loose =
-                                snakePositions.contains(firstPoint) || firstPoint.x < 0 || firstPoint.y < 0 || firstPoint.y >= screenSize.height || firstPoint.x >= screenSize.width
-                            snakeHasEat = point == foodState?.position
-                            newSnakePositions.add(firstPoint)
+                            if (snakePositions.contains(newFirstPoint) || newFirstPoint.x < 0 || newFirstPoint.y < 0 || newFirstPoint.y >= screenSize.height || newFirstPoint.x >= screenSize.width) {
+                                gameState = GameState.FINISHED
+                            }
+
+                            // Add the new first point
+                            newSnakePositions.add(newFirstPoint)
                         }
 
+                        // Add others points, add the first point only if snake has eat
                         snakePositions.forEachIndexed { index, _ ->
                             if (snakeHasEat) {
                                 newSnakePositions.add(snakePositions[index].copy())
@@ -84,13 +93,17 @@ class GameViewModel @Inject constructor(
                                 newSnakePositions.add(snakePositions[index - 1].copy())
                             }
                         }
+
+                        // Update score & create new food if snake has eat
                         if (snakeHasEat) {
                             increaseCurrentScore()
                             updateFoodPosition()
                         }
 
+                        // Update the snake
                         snakeState = snakeState.copy(positionsList = newSnakePositions)
 
+                        // TODO convert into timer ?
                         withContext(Dispatchers.IO) {
                             Thread.sleep(100)
                         }
@@ -100,16 +113,31 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    private fun restartGame(){
+        // Reinit var and launch game
+        gameState = GameState.NOT_STARTED
+        currentScore = 0
+        snakeState = SnakeState()
+        foodState = null
+        currentSnakeOrientation = snakeState.orientation
+
+        screenSize?.let {
+            launchGame(it)
+        }
+    }
+
     private fun increaseCurrentScore() {
         currentScore++
     }
 
     private fun updateOrientation(snakeOrientation: SnakeOrientation) {
-        if (this.gameState != GameState.STARTED) {
-            return
-        }
-        if (gameUseCases.isAllowToUpdateOrientation(lastSnakeOrientation, snakeOrientation)) {
-            this.snakeOrientation = snakeOrientation
+        // Update orientation only if game is started and snake are allowed to move into this orientation
+        if (this.gameState == GameState.STARTED && this.gameUseCases.isAllowToUpdateOrientation(
+                currentSnakeOrientation,
+                snakeOrientation
+            )
+        ) {
+            this.snakeState = this.snakeState.copy(orientation = snakeOrientation)
         }
     }
 

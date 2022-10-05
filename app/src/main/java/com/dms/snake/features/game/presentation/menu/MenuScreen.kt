@@ -47,7 +47,7 @@ fun MenuScreen(
             val modifierMaxWidth = Modifier.fillMaxWidth()
             Column(
                 modifier = modifierMaxWidth,
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
                 SnakeButton(

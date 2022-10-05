@@ -50,12 +50,12 @@ fun EndDialog(
             },
             text = {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     text = String.format(
                         stringResource(R.string.text_dialog_end_game),
                         gameViewModel.currentScore
                     ),
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.h4,
                     color = GreenSnake,
                     textAlign = TextAlign.Center
                 )
@@ -76,7 +76,7 @@ fun EndDialog(
                     ) {
                         Text(
                             text = stringResource(R.string.menu),
-                            style = MaterialTheme.typography.h5,
+                            style = MaterialTheme.typography.h4,
                         )
                     }
 
@@ -87,7 +87,7 @@ fun EndDialog(
                     ) {
                         Text(
                             text = stringResource(R.string.restart),
-                            style = MaterialTheme.typography.h5,
+                            style = MaterialTheme.typography.h4,
                         )
                     }
                 }

@@ -44,7 +44,7 @@ class GameViewModel @Inject constructor(
             is GameEvent.Start -> launchGame(event.screenSize)
             is GameEvent.Restart -> restartGame()
             is GameEvent.Pause -> gameState =
-                if (event.paused) GameState.PAUSED else GameState.STARTED
+                if (event.paused) GameState.PAUSED else GameState.IN_PROGRESS
             is GameEvent.ChangeSnakeOrientation -> updateOrientation(event.orientation)
         }
     }
@@ -52,13 +52,13 @@ class GameViewModel @Inject constructor(
     private fun launchGame(screenSize: IntSize) {
         this.screenSize = screenSize
         if (this.gameState == GameState.NOT_STARTED) {
-            this.gameState = GameState.STARTED
+            this.gameState = GameState.IN_PROGRESS
 
             CoroutineScope(Dispatchers.IO).launch {
                 updateFoodPosition()
 
                 while (gameState != GameState.FINISHED) {
-                    if (gameState == GameState.STARTED) {
+                    if (gameState == GameState.IN_PROGRESS) {
                         // Update the last orientation
                         currentSnakeOrientation = snakeState.orientation
 
@@ -132,7 +132,7 @@ class GameViewModel @Inject constructor(
 
     private fun updateOrientation(snakeOrientation: SnakeOrientation) {
         // Update orientation only if game is started and snake are allowed to move into this orientation
-        if (this.gameState == GameState.STARTED && this.gameUseCases.isAllowToUpdateOrientation(
+        if (this.gameState == GameState.IN_PROGRESS && this.gameUseCases.isAllowToUpdateOrientation(
                 currentSnakeOrientation,
                 snakeOrientation
             )

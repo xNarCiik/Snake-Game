@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.dms.snake.features.game.presentation.game.GameEvent
 import com.dms.snake.features.game.presentation.game.GameViewModel
 import com.dms.snake.features.game.presentation.game.SnakeState
 import com.dms.snake.ui.theme.GreenSnake
@@ -42,7 +43,7 @@ fun GameInterface(gameViewModel: GameViewModel, modifier: Modifier) {
             Canvas(modifier = Modifier
                 .fillMaxSize()
                 .onGloballyPositioned {
-                    gameViewModel.launchGame(it.size)
+                    gameViewModel.onEvent(GameEvent.Start(it.size))
                 }) {
                 gameViewModel.apply {
                     snakeState.positionsList.forEachIndexed { index, point ->

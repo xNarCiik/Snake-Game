@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.dms.snake.BackgroundMusicService
+import com.dms.snake.features.game.domain.service.BackgroundMusicService
 import com.dms.snake.features.game.domain.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

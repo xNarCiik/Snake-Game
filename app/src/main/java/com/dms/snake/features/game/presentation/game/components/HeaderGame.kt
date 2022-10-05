@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dms.snake.R
+import com.dms.snake.features.game.domain.util.GameState
 import com.dms.snake.features.game.presentation.common.MusicViewModel
 import com.dms.snake.features.game.presentation.common.components.MusicButtonIcon
 import com.dms.snake.features.game.presentation.common.components.SnakeButtonIcon
@@ -57,7 +58,7 @@ fun HeaderGame(
 
         MusicButtonIcon(musicViewModel = musicViewModel)
 
-        PauseButton(gameViewModel.paused, onPauseClick = {
+        PauseButton(gameViewModel.gameState == GameState.PAUSED, onPauseClick = {
             gameViewModel.onEvent(GameEvent.Pause(true))
         }, onResumeClick = {
             gameViewModel.onEvent(GameEvent.Pause(false))

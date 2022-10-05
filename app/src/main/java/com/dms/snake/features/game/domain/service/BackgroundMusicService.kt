@@ -1,14 +1,14 @@
-package com.dms.snake
+package com.dms.snake.features.game.domain.service
 
 import android.app.Service
 import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
+import com.dms.snake.R
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player.REPEAT_MODE_ALL
 
-// TODO where put service ?
 class BackgroundMusicService : Service() {
 
     private lateinit var musicPlayer: ExoPlayer

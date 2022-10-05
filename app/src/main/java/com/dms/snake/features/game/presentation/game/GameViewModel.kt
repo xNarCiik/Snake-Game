@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import com.dms.snake.features.game.domain.model.Point
 import com.dms.snake.features.game.domain.use_case.GameUseCases
+import com.dms.snake.features.game.domain.util.GameState
 import com.dms.snake.features.game.domain.util.SnakeOrientation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,7 @@ class GameViewModel @Inject constructor(
     private val gameUseCases: GameUseCases
 ) : ViewModel() {
 
-    var paused by mutableStateOf(false)
+    var gameState by mutableStateOf(GameState.NOT_STARTED)
         private set
 
     var currentScore by mutableStateOf(0)
@@ -36,19 +37,26 @@ class GameViewModel @Inject constructor(
     private var lastSnakeOrientation = snakeOrientation
 
     private var screenSize: IntSize? = null
-    var gameIsLaunched = false // TODO remove this check ?
 
-    fun launchGame(screenSize: IntSize) {
-        if (gameIsLaunched) return
-        gameIsLaunched = true
+    fun onEvent(event: GameEvent) {
+        when (event) {
+            is GameEvent.Start -> launchGame(event.screenSize)
+            is GameEvent.Pause -> gameState =
+                if (event.paused) GameState.PAUSED else GameState.STARTED
+            is GameEvent.ChangeSnakeOrientation -> updateOrientation(event.orientation)
+        }
+    }
+
+    private fun launchGame(screenSize: IntSize) {
         this.screenSize = screenSize
+        if(this.gameState == GameState.NOT_STARTED){
+            this.gameState = GameState.STARTED
 
-        CoroutineScope(Dispatchers.IO).launch {
-            updateFoodPosition()
-            var loose = false
-            while (!loose) {
-                if (!paused) {
-                    CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.IO).launch {
+                updateFoodPosition()
+                var loose = false
+                while (!loose) {
+                    if (gameState == GameState.STARTED) {
                         lastSnakeOrientation = snakeOrientation
                         val snakePositions = snakeState.positionsList
                         val newSnakePositions = arrayListOf<Point>()
@@ -82,20 +90,13 @@ class GameViewModel @Inject constructor(
                         }
 
                         snakeState = snakeState.copy(positionsList = newSnakePositions)
-                    }
-                    withContext(Dispatchers.IO) {
-                        Thread.sleep(100)
+
+                        withContext(Dispatchers.IO) {
+                            Thread.sleep(100)
+                        }
                     }
                 }
             }
-        }
-    }
-
-    fun onEvent(event: GameEvent) {
-        when (event) {
-            is GameEvent.Pause -> this.paused = event.paused
-            is GameEvent.ChangeSnakeOrientation -> updateOrientation(event.orientation)
-
         }
     }
 
@@ -104,7 +105,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun updateOrientation(snakeOrientation: SnakeOrientation) {
-        if (this.paused) {
+        if (this.gameState != GameState.STARTED) {
             return
         }
         if (gameUseCases.isAllowToUpdateOrientation(lastSnakeOrientation, snakeOrientation)) {

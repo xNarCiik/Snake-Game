@@ -7,17 +7,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.dms.snake.features.game.domain.service.BackgroundMusicService
-import com.dms.snake.features.game.domain.repository.GameRepository
+import com.dms.snake.features.game.domain.repository.SnakeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MusicViewModel @Inject constructor(
     private val application: Application,
-    private val gameRepository: GameRepository
+    private val snakeRepository: SnakeRepository
 ) : ViewModel() {
 
-    var isMuted by mutableStateOf(gameRepository.musicIsMuted())
+    var isMuted by mutableStateOf(snakeRepository.musicIsMuted())
         private set
 
     fun init() {
@@ -33,7 +33,7 @@ class MusicViewModel @Inject constructor(
                 if (isMuted) BackgroundMusicService.UNMUTE_MUSIC_ACTION else BackgroundMusicService.MUTE_MUSIC_ACTION
         })
         this.isMuted = !isMuted
-        gameRepository.saveMusicIsMuted(isMuted)
+        snakeRepository.saveMusicIsMuted(isMuted)
     }
 
     private fun startServiceMusic(intent: Intent) = application.startService(intent)

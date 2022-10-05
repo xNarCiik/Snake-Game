@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dms.snake.features.game.presentation.common.MusicViewModel
 import com.dms.snake.features.game.presentation.game.GameScreen
-import com.dms.snake.features.game.presentation.highscores.HighscoresScreen
+import com.dms.snake.features.game.presentation.scores.ScoresScreen
 import com.dms.snake.features.game.presentation.menu.MenuScreen
 import com.dms.snake.features.game.presentation.util.Screen
 import com.dms.snake.ui.theme.SnakeAppTheme
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                             MenuScreen(navController, musicViewModel)
                         }
                         composable(route = Screen.HighscoresScreen.route) {
-                            HighscoresScreen(navController)
+                            ScoresScreen(navController)
                         }
                         composable(route = Screen.GameScreen.route) {
                             GameScreen(navController, musicViewModel)

@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import com.dms.snake.features.game.domain.model.Point
-import com.dms.snake.features.game.domain.use_case.GameUseCases
+import com.dms.snake.features.game.domain.use_case.game.GameUseCases
 import com.dms.snake.features.game.domain.util.GameState
 import com.dms.snake.features.game.domain.util.SnakeOrientation
 import dagger.hilt.android.lifecycle.HiltViewModel

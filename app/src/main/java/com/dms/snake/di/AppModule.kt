@@ -1,12 +1,16 @@
 package com.dms.snake.di
 
 import android.app.Application
-import com.dms.snake.features.game.data.repository.GameRepositoryImpl
-import com.dms.snake.features.game.domain.repository.GameRepository
-import com.dms.snake.features.game.domain.use_case.CalculateNextFirstPointSnakeUseCase
-import com.dms.snake.features.game.domain.use_case.IsAllowToUpdateOrientationUseCase
-import com.dms.snake.features.game.domain.use_case.GameUseCases
-import com.dms.snake.features.game.domain.use_case.GenerateFoodStateUseCase
+import androidx.room.Room
+import com.dms.snake.features.game.data.data_source.SnakeDatabase
+import com.dms.snake.features.game.data.repository.SnakeRepositoryImpl
+import com.dms.snake.features.game.domain.repository.SnakeRepository
+import com.dms.snake.features.game.domain.use_case.game.CalculateNextFirstPointSnakeUseCase
+import com.dms.snake.features.game.domain.use_case.game.GameUseCases
+import com.dms.snake.features.game.domain.use_case.game.GenerateFoodStateUseCase
+import com.dms.snake.features.game.domain.use_case.game.IsAllowToUpdateOrientationUseCase
+import com.dms.snake.features.game.domain.use_case.scores.GetScoresUseCase
+import com.dms.snake.features.game.domain.use_case.scores.ScoresUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +23,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGameRepository(app: Application): GameRepository =
-        GameRepositoryImpl(app.applicationContext)
+    fun provideSnakeDatabase(app: Application): SnakeDatabase {
+        return Room.databaseBuilder(
+            app,
+            SnakeDatabase::class.java,
+            SnakeDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGameRepository(app: Application, snakeDatabase: SnakeDatabase): SnakeRepository =
+        SnakeRepositoryImpl(app.applicationContext, snakeDatabase.scoreDao)
 
     @Provides
     @Singleton
@@ -29,6 +43,13 @@ object AppModule {
             isAllowToUpdateOrientation = IsAllowToUpdateOrientationUseCase(),
             generateFoodState = GenerateFoodStateUseCase(),
             calculateNextFirstPointSnake = CalculateNextFirstPointSnakeUseCase()
+        )
+
+    @Provides
+    @Singleton
+    fun provideScoresUseCases(snakeRepository: SnakeRepository): ScoresUseCases =
+        ScoresUseCases(
+            getScoresUseCase = GetScoresUseCase(snakeRepository = snakeRepository)
         )
 
 }

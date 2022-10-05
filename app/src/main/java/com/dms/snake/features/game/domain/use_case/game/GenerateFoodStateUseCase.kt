@@ -1,4 +1,4 @@
-package com.dms.snake.features.game.domain.use_case
+package com.dms.snake.features.game.domain.use_case.game
 
 import androidx.compose.ui.unit.IntSize
 import com.dms.snake.features.game.domain.model.Point

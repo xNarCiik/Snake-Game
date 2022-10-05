@@ -69,7 +69,7 @@ fun MenuScreen(
                     }
                 ) {
                     Text(
-                        text = stringResource(R.string.highscores),
+                        text = stringResource(R.string.scores),
                         style = MaterialTheme.typography.h3
                     )
                 }

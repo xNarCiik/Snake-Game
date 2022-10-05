@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dms.snake.features.game.domain.util.GameState
 import com.dms.snake.features.game.presentation.common.MusicViewModel
-import com.dms.snake.features.game.presentation.game.components.BottomGame
+import com.dms.snake.features.game.presentation.game.components.Gamepad
 import com.dms.snake.features.game.presentation.game.components.GameInterface
 import com.dms.snake.features.game.presentation.game.components.HeaderGame
 import com.dms.snake.features.game.presentation.game.components.dialog.EndDialog
@@ -39,7 +39,7 @@ fun GameScreen(
 
             GameInterface(gameViewModel, Modifier.weight(1f))
 
-            BottomGame(gameViewModel)
+            Gamepad(gameViewModel)
         }
 
         when (gameViewModel.gameState) {

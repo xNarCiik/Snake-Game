@@ -18,7 +18,7 @@ import com.dms.snake.features.game.presentation.game.GameEvent
 import com.dms.snake.features.game.presentation.game.GameViewModel
 
 @Composable
-fun BottomGame(
+fun Gamepad(
     gameViewModel: GameViewModel
 ) {
     ConstraintLayout(
@@ -28,12 +28,14 @@ fun BottomGame(
         val (btnDown, btnUp, btnLeft, btnRight) = createRefs()
 
         SnakeButtonIcon(
-            modifier = Modifier.constrainAs(btnUp) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            },
-            size = 100.dp,
+            modifier = Modifier
+                .padding(bottom = 18.dp)
+                .constrainAs(btnUp) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            size = 90.dp,
             imageVector = Icons.Rounded.ArrowDropUp, contentDescription = "up_button"
         )
         {
@@ -45,12 +47,13 @@ fun BottomGame(
         }
 
         SnakeButtonIcon(
-            modifier = Modifier.constrainAs(btnDown) {
-                top.linkTo(btnUp.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            },
-            size = 100.dp,
+            modifier = Modifier
+                .constrainAs(btnDown) {
+                    top.linkTo(btnUp.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            size = 90.dp,
             imageVector = Icons.Rounded.ArrowDropDown, contentDescription = "down_button"
         )
         {
@@ -62,12 +65,13 @@ fun BottomGame(
         }
 
         SnakeButtonIcon(
-            modifier = Modifier.constrainAs(btnLeft) {
-                top.linkTo(btnUp.top)
-                end.linkTo(btnUp.start)
-                bottom.linkTo(btnDown.bottom)
-            },
-            size = 100.dp,
+            modifier = Modifier
+                .constrainAs(btnLeft) {
+                    top.linkTo(btnUp.top)
+                    end.linkTo(btnUp.start)
+                    bottom.linkTo(btnDown.bottom)
+                },
+            size = 90.dp,
             imageVector = Icons.Rounded.ArrowLeft, contentDescription = "left_button"
         )
         {
@@ -79,12 +83,13 @@ fun BottomGame(
         }
 
         SnakeButtonIcon(
-            modifier = Modifier.constrainAs(btnRight) {
-                top.linkTo(btnUp.top)
-                start.linkTo(btnUp.end)
-                bottom.linkTo(btnDown.bottom)
-            },
-            size = 100.dp,
+            modifier = Modifier
+                .constrainAs(btnRight) {
+                    top.linkTo(btnUp.top)
+                    start.linkTo(btnUp.end)
+                    bottom.linkTo(btnDown.bottom)
+                },
+            size = 90.dp,
             imageVector = Icons.Rounded.ArrowRight, contentDescription = "right_button"
         )
         {
@@ -99,6 +104,6 @@ fun BottomGame(
 
 @Composable
 @Preview
-fun BottomGamePreview() {
-    BottomGame(gameViewModel = hiltViewModel())
+fun GamepadPreview() {
+    Gamepad(gameViewModel = hiltViewModel())
 }

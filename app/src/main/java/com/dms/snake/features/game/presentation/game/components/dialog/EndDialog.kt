@@ -1,17 +1,20 @@
 package com.dms.snake.features.game.presentation.game.components.dialog
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,10 +36,12 @@ fun EndDialog(
     val showEndDialog = remember { mutableStateOf(true) }
     if (showEndDialog.value) {
         AlertDialog(
-            modifier = Modifier.padding(all = 12.dp),
+            modifier = Modifier
+                .border(BorderStroke(2.dp, GreenSnake)),
             title = {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     text = stringResource(R.string.title_dialog_end_game),
                     style = MaterialTheme.typography.h3,
                     color = GreenSnake,
@@ -56,7 +61,7 @@ fun EndDialog(
                 )
             },
             onDismissRequest = { },
-            buttons = {
+            confirmButton = {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -86,7 +91,8 @@ fun EndDialog(
                         )
                     }
                 }
-            }
+            },
+            containerColor = Color.Black
         )
     }
 }

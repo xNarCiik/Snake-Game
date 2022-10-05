@@ -1,19 +1,20 @@
 package com.dms.snake.features.game.presentation.game.components.dialog
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,10 +40,12 @@ fun PauseDialog(
     val showPauseDialog = remember { mutableStateOf(true) }
     if (showPauseDialog.value) {
         AlertDialog(
-            modifier = Modifier.padding(all = 12.dp),
+            modifier = Modifier
+                .border(BorderStroke(2.dp, GreenSnake)),
             title = {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     text = stringResource(R.string.pause),
                     style = MaterialTheme.typography.h3,
                     color = GreenSnake,
@@ -70,7 +73,8 @@ fun PauseDialog(
                 }
             },
             onDismissRequest = {},
-            buttons = {}
+            confirmButton = {},
+            containerColor = Color.Black
         )
     }
 }

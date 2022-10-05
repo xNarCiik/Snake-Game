@@ -32,7 +32,8 @@ fun SnakeButtonIcon(
         Icon(
             imageVector = imageVector,
             contentDescription = contentDescription,
-            tint = GreenSnake
+            tint = GreenSnake,
+            modifier = Modifier.size(size.times(0.85f))
         )
     }
 }

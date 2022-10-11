@@ -8,5 +8,6 @@ sealed class GameEvent {
     object Restart : GameEvent()
     data class Pause(val paused: Boolean) : GameEvent()
     data class ChangeSnakeOrientation(val orientation: SnakeOrientation) : GameEvent()
+    data class SaveScore(val name: String) : GameEvent()
 }
 

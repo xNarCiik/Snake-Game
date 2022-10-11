@@ -1,7 +1,5 @@
 package com.dms.snake.features.game.presentation.game.components.dialog
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,12 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dms.snake.R
+import com.dms.snake.features.game.presentation.common.components.SnakeDialog
 import com.dms.snake.features.game.presentation.game.GameEvent
 import com.dms.snake.features.game.presentation.game.GameViewModel
 import com.dms.snake.ui.theme.GreenSnake
@@ -35,9 +32,7 @@ fun EndDialog(
     // Use small trick : the dialog will not disappear directly when we do a popBackStack
     val showEndDialog = remember { mutableStateOf(true) }
     if (showEndDialog.value) {
-        AlertDialog(
-            modifier = Modifier
-                .border(BorderStroke(2.dp, GreenSnake)),
+        SnakeDialog(
             title = {
                 Text(
                     modifier = Modifier
@@ -50,7 +45,9 @@ fun EndDialog(
             },
             text = {
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
                     text = String.format(
                         stringResource(R.string.text_dialog_end_game),
                         gameViewModel.currentScore
@@ -60,7 +57,6 @@ fun EndDialog(
                     textAlign = TextAlign.Center
                 )
             },
-            onDismissRequest = { },
             confirmButton = {
                 Row(
                     modifier = Modifier
@@ -70,6 +66,7 @@ fun EndDialog(
                 ) {
                     Button(
                         onClick = {
+                            gameViewModel.onEvent(GameEvent.SaveScore("Daminou")) // TODO text edit
                             showEndDialog.value = false
                             navController.popBackStack()
                         }
@@ -79,7 +76,6 @@ fun EndDialog(
                             style = MaterialTheme.typography.h4,
                         )
                     }
-
                     Button(
                         onClick = {
                             gameViewModel.onEvent(GameEvent.Restart)
@@ -91,8 +87,7 @@ fun EndDialog(
                         )
                     }
                 }
-            },
-            containerColor = Color.Black
+            }
         )
     }
 }

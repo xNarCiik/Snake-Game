@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dms.snake.features.game.domain.model.Point
 import com.dms.snake.features.game.domain.model.Score
 import com.dms.snake.features.game.domain.use_case.game.GameUseCases
@@ -49,6 +50,7 @@ class GameViewModel @Inject constructor(
             is GameEvent.Pause -> gameState =
                 if (event.paused) GameState.PAUSED else GameState.IN_PROGRESS
             is GameEvent.ChangeSnakeOrientation -> updateOrientation(event.orientation)
+            is GameEvent.SaveScore -> saveScore(event.name)
         }
     }
 
@@ -112,7 +114,6 @@ class GameViewModel @Inject constructor(
                         }
                     }
                 }
-                scoresUseCases.insertScore(Score("Damien", currentScore))
             }
         }
     }
@@ -148,6 +149,12 @@ class GameViewModel @Inject constructor(
     private fun updateFoodPosition() {
         screenSize?.let {
             foodState = gameUseCases.generateFoodState(it, snakeState.positionsList)
+        }
+    }
+
+    private fun saveScore(name: String) {
+        viewModelScope.launch {
+            scoresUseCases.insertScore(Score(name, currentScore))
         }
     }
 }

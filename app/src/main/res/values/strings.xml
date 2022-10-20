@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Snake</string>
     <string name="score">Score</string>
-    <string name="start">Start</string>
+    <string name="start">Start !</string>
     <string name="scores">Scores</string>
     <string name="difficulty">Difficulty</string>
     <string name="difficulty_normal">Normal</string>

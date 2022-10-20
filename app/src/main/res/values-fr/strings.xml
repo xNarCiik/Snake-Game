@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Snake</string>
+    <string name="score">Score</string>
+    <string name="start">Jouer !</string>
+    <string name="scores">Scores</string>
+    <string name="difficulty">Difficulté</string>
+    <string name="difficulty_normal">Normal</string>
+    <string name="difficulty_hard">Difficile</string>
+    <string name="title_dialog_end_game">Jeu terminé</string>
+    <string name="text_dialog_end_game">Vous avez un score final de %s</string>
+    <string name="menu">Menu</string>
+    <string name="restart">Recommencer</string>
+    <string name="pause">Pause</string>
+    <string name="back">Retour</string>
+</resources>

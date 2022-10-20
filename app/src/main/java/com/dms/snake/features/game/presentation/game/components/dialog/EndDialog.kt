@@ -1,15 +1,11 @@
 package com.dms.snake.features.game.presentation.game.components.dialog
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dms.snake.R
 import com.dms.snake.features.game.presentation.common.components.SnakeDialog
+import com.dms.snake.features.game.presentation.common.components.SnakeTextField
 import com.dms.snake.features.game.presentation.game.GameEvent
 import com.dms.snake.features.game.presentation.game.GameViewModel
 import com.dms.snake.ui.theme.GreenSnake
@@ -31,6 +28,8 @@ fun EndDialog(
 ) {
     // Use small trick : the dialog will not disappear directly when we do a popBackStack
     val showEndDialog = remember { mutableStateOf(true) }
+    var name by rememberSaveable { mutableStateOf("") }
+
     if (showEndDialog.value) {
         SnakeDialog(
             title = {
@@ -44,18 +43,28 @@ fun EndDialog(
                 )
             },
             text = {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    text = String.format(
-                        stringResource(R.string.text_dialog_end_game),
-                        gameViewModel.currentScore
-                    ),
-                    style = MaterialTheme.typography.h4,
-                    color = GreenSnake,
-                    textAlign = TextAlign.Center
-                )
+                Column {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        text = String.format(
+                            stringResource(R.string.text_dialog_end_game),
+                            gameViewModel.currentScore
+                        ),
+                        style = MaterialTheme.typography.h4,
+                        color = GreenSnake,
+                        textAlign = TextAlign.Center
+                    )
+                    // TODO show only if new score
+                    SnakeTextField(
+                        value = name,
+                        onValueChange = {
+                            name = it
+                        },
+                        hintValue = "Enter pseudo"
+                    )
+                }
             },
             confirmButton = {
                 Row(
@@ -66,7 +75,7 @@ fun EndDialog(
                 ) {
                     Button(
                         onClick = {
-                            gameViewModel.onEvent(GameEvent.SaveScore("Daminou")) // TODO text edit
+                            gameViewModel.onEvent(GameEvent.SaveScore(name)) // TODO save only if new score
                             showEndDialog.value = false
                             navController.popBackStack()
                         }
@@ -78,6 +87,7 @@ fun EndDialog(
                     }
                     Button(
                         onClick = {
+                            gameViewModel.onEvent(GameEvent.SaveScore(name)) // TODO save only if new score
                             gameViewModel.onEvent(GameEvent.Restart)
                         }
                     ) {

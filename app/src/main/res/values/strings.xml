@@ -12,4 +12,5 @@
     <string name="restart">Restart</string>
     <string name="pause">Pause</string>
     <string name="back">Back</string>
+    <string name="hint_edit_field_name">Enter name</string>
 </resources>

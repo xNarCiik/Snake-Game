@@ -9,7 +9,8 @@
     <string name="title_dialog_end_game">Jeu terminé</string>
     <string name="text_dialog_end_game">Vous avez un score final de %s</string>
     <string name="menu">Menu</string>
-    <string name="restart">Recommencer</string>
+    <string name="restart">Rejouer</string>
     <string name="pause">Pause</string>
     <string name="back">Retour</string>
+    <string name="hint_edit_field_name">Entrer nom</string>
 </resources>

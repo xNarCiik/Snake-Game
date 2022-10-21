@@ -62,7 +62,7 @@ fun EndDialog(
                         onValueChange = {
                             name = it
                         },
-                        hintValue = "Enter pseudo"
+                        hintValue = stringResource(R.string.hint_edit_field_name)
                     )
                 }
             },

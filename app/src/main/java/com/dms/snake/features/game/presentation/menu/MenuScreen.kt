@@ -1,5 +1,7 @@
 package com.dms.snake.features.game.presentation.menu
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -9,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,6 +24,8 @@ import com.dms.snake.features.game.presentation.common.components.MusicButtonIco
 import com.dms.snake.features.game.presentation.common.components.SnakeButton
 import com.dms.snake.features.game.presentation.util.Screen
 import com.dms.snake.ui.theme.GreenSnake
+
+private const val privacyUrl = "https://snake-dms.000webhostapp.com/privacy.htm"
 
 @Composable
 fun MenuScreen(
@@ -97,6 +102,21 @@ fun MenuScreen(
                         )
                     }
                 }
+
+                SnakeButton(
+                    modifier = modifierMaxWidth,
+                    onClick = {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, Uri.parse(privacyUrl))
+                        )
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.privacy),
+                        style = MaterialTheme.typography.h3,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
 
@@ -111,3 +131,4 @@ fun MenuScreen(
 fun MenuScreenPreview() {
     MenuScreen(navController = rememberNavController(), musicViewModel = hiltViewModel())
 }
+
